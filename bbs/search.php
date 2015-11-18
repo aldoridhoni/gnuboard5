@@ -17,7 +17,7 @@ if ($stx) {
     $stx = preg_replace('/\//', '\/', trim($stx));
     $sop = strtolower($sop);
     if (!$sop || !($sop == 'and' || $sop == 'or')) $sop = 'and'; // 연산자 and , or
-    $srows = isset($_GET['srows']) ? $_GET['srows'] : 10;
+    $srows = isset($_GET['srows']) ? (int)preg_replace('#[^0-9]#', '', $_GET['srows']) : 10;
     if (!$srows) $srows = 10; // 한페이지에 출력하는 검색 행수
 
     $g5_search['tables'] = Array();
@@ -120,7 +120,7 @@ if ($stx) {
 
         $sql = " select wr_id from {$tmp_write_table} where {$sql_search} ";
         $result = sql_query($sql, false);
-        $row['cnt'] = @mysql_num_rows($result);
+        $row['cnt'] = @sql_num_rows($result);
 
         $total_count += $row['cnt'];
         if ($row['cnt']) {
